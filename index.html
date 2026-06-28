@@ -1,13 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
 </head>
+
 <body>
-    
-  <script src="script.js"></script>  
+
+    <!-- Header -->
+    <header>
+        <h1>🍽️ Recipe Finder</h1>
+        <p>Find delicious recipes in seconds.</p>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Search Section -->
+        <section class="search-section">
+
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search recipes (e.g. pasta, chicken...)">
+
+            <button id="search-btn">
+                Search
+            </button>
+
+        </section>
+
+        <!-- Recipe Results -->
+        <section class="recipes-section">
+
+            <h2>Recipes</h2>
+
+            <div id="recipe-container">
+
+                <!-- Recipe cards will appear here using JavaScript -->
+
+            </div>
+
+        </section>
+
+        <!-- Favourite Recipes -->
+        <section class="favorites-section">
+
+            <h2>❤️ Favorite Recipes</h2>
+
+            <div id="favorites-container">
+
+                <!-- Favourite recipes will appear here -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
 </body>
+
 </html>
