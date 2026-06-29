@@ -225,3 +225,23 @@ transform:rotate(360deg);
 }
 
 
+#toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#333;
+    color:white;
+    padding:15px 25px;
+    border-radius:8px;
+    opacity:0;
+    transition:.4s;
+    z-index:1000;
+}
+
+#toast.show{
+    opacity:1;
+}
+
+
+
+

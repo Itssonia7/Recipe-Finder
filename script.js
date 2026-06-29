@@ -3,31 +3,57 @@ const recipeContainer = document.getElementById("recipe-container");
 const favoritesContainer = document.getElementById("favorites-container");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
+const toggleTheme = document.getElementById("toggle-theme");
+const toast = document.getElementById("toast");
 
 const API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
+/* ---------------- Toast ---------------- */
+
+function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
+}
+
+/* ---------------- Fetch Recipes ---------------- */
+
 async function fetchRecipes(query = "") {
+
     recipeContainer.innerHTML = "<h2>Loading recipes...</h2>";
 
     try {
+
         const response = await fetch(API_URL + query);
         const data = await response.json();
+
         displayRecipes(data.meals);
+
     } catch (error) {
+
         recipeContainer.innerHTML =
             "<h2>Something went wrong. Please try again.</h2>";
+
     }
+
 }
+
+/* ---------------- Display Recipes ---------------- */
 
 function displayRecipes(meals) {
 
     recipeContainer.innerHTML = "";
 
     if (!meals) {
+
         recipeContainer.innerHTML = "<h2>No recipes found.</h2>";
         return;
+
     }
 
     meals.forEach((meal) => {
@@ -43,35 +69,46 @@ function displayRecipes(meals) {
 
             <button class="view-btn"
             onclick="window.open('${meal.strSource || meal.strYoutube}','_blank')">
-            View Recipe
+                View Recipe
             </button>
 
             <button class="save-btn"
-            onclick="saveFavorite(${meal.idMeal},
-            '${meal.strMeal.replace(/'/g, "\\'")}',
-            '${meal.strMealThumb}')">
-            ❤️ Save
+            onclick="saveFavorite('${meal.idMeal}','${meal.strMeal.replace(/'/g,"\\'")}','${meal.strMealThumb}')">
+                ❤️ Save
             </button>
 
         </div>
         `;
+
     });
+
 }
+
+/* ---------------- Favorites ---------------- */
 
 function saveFavorite(id, name, image) {
 
     const exists = favorites.some(recipe => recipe.id == id);
 
     if (exists) {
-        alert("Recipe already saved!");
+
+        showToast("Recipe already saved!");
         return;
+
     }
 
-    favorites.push({ id, name, image });
+    favorites.push({
+        id,
+        name,
+        image
+    });
 
     localStorage.setItem("favorites", JSON.stringify(favorites));
 
     displayFavorites();
+
+    showToast("Recipe saved!");
+
 }
 
 function displayFavorites() {
@@ -79,8 +116,12 @@ function displayFavorites() {
     favoritesContainer.innerHTML = "";
 
     if (favorites.length === 0) {
-        favoritesContainer.innerHTML = "<p>No favorite recipes yet.</p>";
+
+        favoritesContainer.innerHTML =
+            "<p>No favorite recipes yet.</p>";
+
         return;
+
     }
 
     favorites.forEach(recipe => {
@@ -93,8 +134,8 @@ function displayFavorites() {
             <h3>${recipe.name}</h3>
 
             <button class="delete-btn"
-            onclick="removeFavorite(${recipe.id})">
-            Remove
+            onclick="removeFavorite('${recipe.id}')">
+                Remove
             </button>
 
         </div>
@@ -104,7 +145,7 @@ function displayFavorites() {
 
 }
 
-function removeFavorite(id){
+function removeFavorite(id) {
 
     favorites = favorites.filter(recipe => recipe.id != id);
 
@@ -112,36 +153,49 @@ function removeFavorite(id){
 
     displayFavorites();
 
+    showToast("Recipe removed!");
+
 }
 
+/* ---------------- Search ---------------- */
+
 searchBtn.addEventListener("click", () => {
+
     fetchRecipes(searchInput.value.trim());
+
 });
 
 searchInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter")
+
+    if (e.key === "Enter") {
+
         fetchRecipes(searchInput.value.trim());
+
+    }
+
 });
 
-displayFavorites();
-fetchRecipes();
-
-
-const toggleTheme = document.getElementById("toggle-theme");
+/* ---------------- Dark Mode ---------------- */
 
 toggleTheme.addEventListener("click", () => {
 
     document.body.classList.toggle("dark-mode");
 
-    if(document.body.classList.contains("dark-mode")){
+    if (document.body.classList.contains("dark-mode")) {
 
-        toggleTheme.innerHTML="☀️";
+        toggleTheme.innerHTML = "☀️";
 
-    }else{
+    } else {
 
-        toggleTheme.innerHTML="🌙";
+        toggleTheme.innerHTML = "🌙";
 
     }
 
 });
+
+/* ---------------- Initial Load ---------------- */
+
+displayFavorites();
+
+fetchRecipes();
 
