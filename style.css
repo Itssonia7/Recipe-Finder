@@ -169,3 +169,47 @@ h2 {
     background:#1b5e20;
 }
 
+.save-btn,
+.delete-btn{
+
+    width:calc(100% - 30px);
+    margin:0 15px 15px;
+    padding:10px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.save-btn{
+
+    background:#ff4081;
+
+}
+
+.save-btn:hover{
+
+    background:#e91e63;
+
+}
+
+.delete-btn{
+
+    background:#d32f2f;
+
+}
+
+.delete-btn:hover{
+
+    background:#b71c1c;
+
+}
+
+
